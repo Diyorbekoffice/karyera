@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Verification from "./auth/Verification";
 import Respassword from "./auth/Respassword";
 import Sentemail from "./auth/Sentemail";
-import LocationCreate from "./createUser/locationCreate";
+import LocationCreate from "./createUser/LocationCreate";
 import Study from "./createUser/Study";
 import Main from "./landingPage/Main";
 import Work from "./createUser/Work";
