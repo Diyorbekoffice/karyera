@@ -3,7 +3,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Home from "./pages/Home";
 import Verification from "./auth/Verification";
-import Respassword from "./auth/ResPassword";
+import Respassword from "./auth/Respassword";
 import Sentemail from "./auth/Sentemail";
 import LocationCreate from "./createUser/locationCreate";
 import Study from "./createUser/Study";
