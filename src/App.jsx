@@ -3,9 +3,9 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Home from "./pages/Home";
 import Verification from "./auth/Verification";
-import Respassword from "./auth/Respassword";
+import Respassword from "./auth/Respassword"; // ❗ Fayl nomi: Respassword.jsx
 import Sentemail from "./auth/Sentemail";
-import LocationCreate from "./createUser/LocationCreate";
+import LocationCreate from "./createUser/LocationCreate"; // ❗ Fayl nomi: LocationCreate.jsx
 import Study from "./createUser/Study";
 import Main from "./landingPage/Main";
 import Work from "./createUser/Work";
@@ -22,7 +22,6 @@ function App() {
             <Route path="/respassword" element={<Respassword />} />
             <Route path="/sentemail" element={<Sentemail />} />
             <Route path="/locationCreate" element={<LocationCreate />} />
-          
             <Route path="/work" element={<Work />} />
             <Route path="/study" element={<Study />} />
 
@@ -30,9 +29,6 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/profile/:userId" element={<Profile />} />
             </Route>
-
-
-            
         </Routes>
     );
 }
