@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+
+
+@layer base {
+    @font-face {
+        font-family: 'DM Sans';
+        src: url('../public/fonts/DMSans-Medium.woff2') format('woff2'),
+            url('../public/fonts/DMSans-Medium.woff') format('woff');
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: 'DM Sans';
+        src: url('../public/fonts/DMSans-Bold.woff2') format('woff2'),
+            url('../public/fonts/DMSans-Bold.woff') format('woff');
+        font-weight: bold;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: 'DM Sans';
+        src: url('../public/fonts/DMSans-Regular.woff2') format('woff2'),
+            url('../public/fonts/DMSans-Regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+
+    @font-face {
+        font-family: 'DM Sans';
+        src: url('../public/fonts/DMSans-SemiBold.woff2') format('woff2'),
+            url('../public/fonts/DMSans-SemiBold.woff') format('woff');
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+    }
+}
+
+@theme {
+    --font-dn: "DM Sans", "sans-serif";
+    --color-blacknew: #1a1a1a;
+    --color-bluenew: #293BFF;
+    --color-pcolor: #979191;
+    --color-bginput: rgba(196, 196, 196, 0.25);
+
+}
+
+
+* {
+    font-family: "DM Sans";
+}
+
+body{
+    background-color: #f3f3f3;
+}
+
+
+/* Scrollbarni yashirish uchun */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+
+
