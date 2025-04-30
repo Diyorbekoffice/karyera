@@ -7,7 +7,8 @@ import Respassword from "./auth/Respassword"; // ❗ Fayl nomi: Respassword.jsx
 import Sentemail from "./auth/Sentemail";
 // Avval: import LocationCreate from "./createUser/LocationCreate";
 // Keyin: 
-import LocationCreate from "./createUser/locationCreate"; // L katta harf // ❗ Fayl nomi: LocationCreate.jsx
+// import LocationCreate from "./createUser/locationCreate";
+import CreateLocation from "./createUser/CreateLocation"
 import Study from "./createUser/Study";
 import Main from "./landingPage/Main";
 import Work from "./createUser/Work";
@@ -24,7 +25,9 @@ function App() {
             <Route path="/verification" element={<Verification />} />
             <Route path="/respassword" element={<Respassword />} />
             <Route path="/sentemail" element={<Sentemail />} />
-            <Route path="/locationcreate" element={<LocationCreate />} />
+            <Route path="/locationcreate" element={<CreateLocation />} />
+            
+            
             <Route path="/work" element={<Work />} />
             <Route path="/study" element={<Study />} />
 
