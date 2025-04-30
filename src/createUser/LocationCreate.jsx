@@ -5,7 +5,7 @@ import authBG from '../assets/authBG.svg';
 import back from '../assets/back.svg';
 import { AiOutlineCheck } from 'react-icons/ai'; // react-icons
 
-const LocationCreate = () => {
+const locationCreate = () => {
   const navigate = useNavigate();
 
   const [regions, setRegions] = useState([]);
@@ -165,4 +165,4 @@ const LocationCreate = () => {
   );
 };
 
-export default LocationCreate;
+export default locationCreate;
