@@ -2,9 +2,14 @@ import { Outlet, useNavigate, NavLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import logo from '../assets/logo.svg';
-import { FaUserCircle, FaSignOutAlt, FaHome, FaUsers, FaPlusSquare, FaInbox } from 'react-icons/fa';
+import Recommendations from "../components/Recommendations";
+import {
+  FaUserCircle, FaSignOutAlt, FaHome, FaUsers, FaPlusSquare,
+  FaInbox, FaSearch, FaBell, FaCogs
+} from 'react-icons/fa';
 import { IoChatbubbleEllipsesSharp } from 'react-icons/io5';
-import Create from '../components/Create'; // 🛑 Create componentni chaqiramiz
+import Create from '../components/Create';
+import StorisMe from '../components/StorisMe';
 
 function Layout() {
   const navigate = useNavigate();
@@ -12,49 +17,33 @@ function Layout() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const [showCreate, setShowCreate] = useState(false); // 🛑 Create ni ochish uchun state
+  const [showCreate, setShowCreate] = useState(false);
 
-  const toggleSelect = () => {
-    setIsSelectOpen(!isSelectOpen);
-  };
-
+  const toggleSelect = () => setIsSelectOpen(!isSelectOpen);
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     navigate('/login');
   };
-
-  const handleLogoClick = () => {
-    navigate('/');
-  };
-
-  const handleProfileClick = () => {
-    const userID = "me"
-    navigate(`/profile/${userID}`);
-  };
-
-  const toggleCreate = () => {
-    setShowCreate(!showCreate); // 🛑 Create ni ko‘rsatish
-  };
+  const handleLogoClick = () => navigate('/');
+  const handleProfileClick = () => navigate(`/profile/me`);
+  const toggleCreate = () => setShowCreate(!showCreate);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        if (!token) {
-          setLoading(false);
-          return;
-        }
+        if (!token) return setLoading(false);
 
         const response = await axios.get(
           "https://karyeraweb.pythonanywhere.com/api/profile/me/",
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
+
         setProfile(response.data);
+
       } catch (err) {
         if (err.response?.status === 401) {
           localStorage.removeItem('accessToken');
@@ -66,136 +55,147 @@ function Layout() {
       }
     };
 
+
     fetchProfile();
   }, [navigate]);
 
+
+
   return (
-    <div className=" ">
-      <div className='bg-white shadow-md'>
-        <header className="flex justify-between py-4 max-w-[1240px] mx-auto">
-          <div
-            className="flex items-center cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={handleLogoClick}
-          >
-            <img src={logo} alt="logo" className="w-[40px] h-[40px]" />
-            <span className="font-bold text-2xl ml-2">Karyera</span>
-          </div>
+    <div className="flex w-full bg-gray-100 ">
 
-          <nav className="flex justify-center gap-12 py-4 ">
-            <NavLink
-              to="/"
-              end
-              className={({ isActive }) =>
-                `text-2xl ${isActive ? 'text-blue-600 underline' : 'text-gray-600 hover:text-blue-600 '}`
-              }
-            >
-              <FaHome />
-            </NavLink>
 
-            <NavLink
-              to="/users"
-              className={({ isActive }) =>
-                `text-2xl ${isActive ? 'text-blue-600 underline' : 'text-gray-600 hover:text-blue-600'}`
-              }
-            >
-              <FaUsers />
-            </NavLink>
 
-            {/* 🛑 to="/create" olib tashlab, onClick qildik */}
-            <div
-              onClick={toggleCreate}
-              className={`cursor-pointer text-2xl  
-    ${showCreate ? 'text-blue-600 ' : 'text-gray-600 hover:text-blue-600'}
-  `}
-            >
-              <FaPlusSquare />
+      {/* Main */}
+      <div className="flex-1 bg">
+        {/* Header */}
+        <header className="bg-white shadow p-4">
+          <div className="flex items-center justify-between max-w-7xl mx-auto">
+            {/* Logo */}
+            <div className="flex items-center gap-1 cursor-pointer" onClick={handleLogoClick}>
+              <img src={logo} alt="logo" className="w-8 h-8" />
+              <span className="font-bold text-[20px]">Karyera</span>
             </div>
 
+            {/* Search Input */}
+            <div className="flex-1 mx-4 max-w-md">
+              <input
+                type="text"
+                placeholder="Qidirish..."
+                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-            <NavLink
-              to="/chat"
-              className={({ isActive }) =>
-                `text-2xl ${isActive ? 'text-blue-600 underline' : 'text-gray-600 hover:text-blue-600'}`
-              }
-            >
-              <IoChatbubbleEllipsesSharp />
-            </NavLink>
-
-            <NavLink
-              to="/connection"
-              className={({ isActive }) =>
-                `text-2xl ${isActive ? 'text-blue-600 underline' : 'text-gray-600 hover:text-blue-600'}`
-              }
-            >
-              <FaInbox />
-            </NavLink>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            {loading ? (
-              <div className="animate-pulse flex space-x-4">
-                <div className="rounded-full bg-gray-200 h-8 w-8"></div>
-                <div className="h-4 bg-gray-200 rounded w-20"></div>
-              </div>
-            ) : error ? (
-              <div className="text-red-500 text-sm">{error}</div>
-            ) : profile ? (
-              <div className="relative flex items-center gap-2">
-                <div onClick={handleProfileClick}>
+            {/* Profile Info */}
+            <div className="flex items-center gap-3">
+              {loading ? (
+                <div className="animate-pulse flex space-x-4">
+                  <div className="rounded-full bg-gray-200 h-8 w-8"></div>
+                  <div className="h-4 bg-gray-200 rounded w-20"></div>
+                </div>
+              ) : profile ? (
+                <div className="relative flex items-center gap-2">
                   {profile.profile_image ? (
                     <img
                       src={profile.profile_image}
                       alt="Profile"
                       className="w-8 h-8 rounded-full object-cover cursor-pointer"
+                      onClick={handleProfileClick}
                     />
                   ) : (
-                    <FaUserCircle className="text-gray-400 text-2xl" />
+                    <FaUserCircle
+                      className="w-8 h-8 text-gray-500 cursor-pointer"
+                      onClick={handleProfileClick}
+                    />
                   )}
-                </div>
-
-                <div className="flex items-center space-x-2 relative">
-                  <div
-                    className="text-gray-800 cursor-pointer"
-                    onClick={toggleSelect}
-                  >
-                    {profile.full_name || 'Foydalanuvchi'}
+                  <div className="text-sm font-medium cursor-pointer" onClick={toggleSelect}>
+                    {profile.full_name}
                   </div>
-
                   {isSelectOpen && (
-                    <div className="absolute top-5 right-0 bg-white shadow-lg rounded py-2 z-50 w-40">
+                    <div className="absolute top-10 right-0 bg-white shadow rounded p-2 z-50">
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-gray-100 transition-colors"
+                        className="flex items-center gap-2 text-red-600 hover:bg-gray-100 px-3 py-2 w-full"
                       >
-                        <FaSignOutAlt className="text-red-600" />
-                        Chiqish
+                        <FaSignOutAlt /> Chiqish
                       </button>
                     </div>
                   )}
                 </div>
-              </div>
-            ) : (
-              <button
-                className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                onClick={() => navigate('/login')}
-              >
-                Kirish
-              </button>
-            )}
+              ) : (
+                <button
+                  onClick={() => navigate('/login')}
+                  className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  Kirish
+                </button>
+              )}
+
+            </div>
           </div>
         </header>
-      </div>
 
-      {/* 🛑 Create form ko‘rsatish */}
-      {showCreate && (
-        <div className="max-w-[760px] mx-auto my-8 absolute z-10 top-12 right-[39%]">
-          <Create />
+        {/* Create Modal */}
+        {showCreate && (
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 z-50">
+            <Create />
+          </div>
+        )}
+
+        <div className='flex mt-1 max-w-[1440px] mx-auto justify-between'>
+          <aside className="w-[350px] bg-white rounded-xl shadow-md flex flex-col p-4 ">
+
+
+            {/* User Card */}
+            <div  className="bg-gray-50  rounded-xl shadow-sm  py-3 mb-8">
+              <div className="flex items-center gap-2 m-2">
+                <div className=''>
+                  <StorisMe />
+                </div>
+                <div>
+                  <h4 onClick={handleProfileClick} className="font-semibold text-lg cursor-pointer">{profile?.full_name || 'Foydalanuvchi'}</h4>
+                  <p onClick={handleProfileClick} className="text-xs text-gray-500 cursor-pointer">{profile?.bio}</p>
+                </div>
+              </div>
+              <div className='flex justify-center gap-12'>
+                <div  className='flex flex-col items-center font-bold'>
+                  {profile?.connections_count} <span> do'stlar</span>
+                </div>
+                <div className='flex flex-col items-center font-bold'>
+                  {profile?.post_count} <span>postlar</span>
+                </div>
+              </div>
+            </div>
+
+            
+
+            {/* Menu */}
+            <nav className="flex flex-col gap-4 text-gray-700">
+              <NavLink to="/" className="flex items-center gap-2 hover:text-blue-600">
+                <FaHome /> Bosh sahifa
+              </NavLink>
+              <NavLink to="/chat" className="flex items-center gap-2 hover:text-blue-600">
+                <IoChatbubbleEllipsesSharp /> Chatlar
+              </NavLink>
+              
+              <NavLink to="/users" className="flex items-center gap-2 hover:text-blue-600">
+                <FaUsers /> Do‘stlar
+              </NavLink>
+              <NavLink to="/settings" className="flex items-center gap-2 hover:text-blue-600">
+                <FaCogs /> Sozlamalar
+              </NavLink>
+            </nav>
+          </aside>
+          <div>
+            <main className="p-6">
+              <Outlet />
+            </main>
+          </div>
+          <div>
+          <Recommendations />
+          </div>
         </div>
-      )}
-
-      <main>
-        <Outlet />
-      </main>
+      </div>
     </div>
   );
 }

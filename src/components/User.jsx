@@ -34,9 +34,16 @@ function User() {
           };
     })
   return (
-    <div className=''>
+    <div className='flex flex-col items-center' >
+      <div className='relative '>
+      <div>
       <StorisMe />
+      </div>
+      <div className='absolute right-0 top-11 border-[3px] rounded-full border-[#f3f3f3] '>
       <StorisCreate />
+      </div>
+    </div>
+    <span className=' text-[12px]'>Mening hikoyam </span>
     </div>
   )
 }

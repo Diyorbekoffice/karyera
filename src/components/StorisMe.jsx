@@ -153,14 +153,15 @@ function StorisMe() {
   };
 
   return (
-    <div className="p-4">
+    <div className="">
       {profile && (
-        <div className="relative inline-block">
+        <div className='flex flex-col'>
+          <div className=" inline-block">
           {profile.profile_image ? (
             <img
               src={profile.profile_image}
               alt="Profile"
-              className={`w-16 h-16 rounded-full border-4 ${filteredStories.length > 0 ? 'border-pink-500' : 'border-white'} ${filteredStories.length > 0 ? 'cursor-pointer' : 'cursor-default'}`}
+              className={` relative w-16 h-16 rounded-full border-4  ${filteredStories.length > 0 ? 'border-pink-500' : 'border-white'} ${filteredStories.length > 0 ? 'cursor-pointer' : 'cursor-default'}`}
               onClick={() => filteredStories.length > 0 && setShowModal(true)}
             />
           ) : (
@@ -171,6 +172,7 @@ function StorisMe() {
               <FaUserCircle className="text-gray-500 text-4xl" />
             </div>
           )}
+        </div >
         </div>
       )}
 

@@ -8,7 +8,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
 
-const ProfileHeader = ({ userId }) => {
+const ProfileImage = ({ userId }) => {
   const [profileImage, setProfileImage] = useState(null);
   const [backImage, setBackImage] = useState(null);
   const [realUserId, setRealUserId] = useState(null);
@@ -453,4 +453,4 @@ const ProfileHeader = ({ userId }) => {
   );
 };
 
-export default ProfileHeader;
+export default ProfileImage;

@@ -315,10 +315,22 @@ function StoriesUser() {
   if (Object.keys(groupedStories).length === 0) return <div className="text-center py-8">No stories available</div>;
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Stories</h1>
+    <div className="ml-6">
       
-      <div className="flex space-x-4 overflow-x-auto pb-4">
+      
+      <div 
+  className=" whitespace-nowrap overflow-x-auto overflow-y-hidden  max-w-[580px]"
+  style={{
+    scrollbarWidth: 'none',          // Firefox
+    msOverflowStyle: 'none',         // IE/Edge
+  }}
+>
+  <style>{`
+    [class*="overflow-x-auto"]::-webkit-scrollbar {
+      display: none;
+    }
+  `}</style>
+     <div className="flex space-x-4 overflow-x-auto pb-4">
         {Object.entries(groupedStories).map(([authorId, authorStories]) => {
           const firstStory = authorStories[0];
           const hasUnviewed = authorStories.some(story => !story.is_viewed);
@@ -349,6 +361,7 @@ function StoriesUser() {
           );
         })}
       </div>
+     </div>
       
       {showModal && currentAuthorStories.length > 0 && currentStoryDetails && (
         <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
