@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import axios from "../axios";
 import authBG from '../assets/authBG.svg';
@@ -74,7 +74,7 @@ const Login = () => {
       <form onSubmit={handleSubmit} className="max-w-[420px] w-full bg-white p-10 rounded-[40px] scale-80">
         <div className='flex justify-between'>
           <p className='text-2xl'>Xush kelibsiz!</p>
-          <p className='text-sm flex flex-col items-end text-[#8D8D8D]'>Hisobingiz yo‘qmi? <a href='/register' className='text-bluenew font-medium cursor-pointer'>Ro’yxatdan o’tish</a></p>
+          <p className='text-sm flex flex-col items-end text-[#8D8D8D]'>Hisobingiz yo‘qmi? <Link to='/register' className='text-bluenew font-medium cursor-pointer'>Ro’yxatdan o’tish</Link></p>
         </div>
         <h1 className='text-3xl font-semibold'>Kirish</h1>
 

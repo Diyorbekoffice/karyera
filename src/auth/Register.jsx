@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from '../axios';
 import authBG from '../assets/authBG.svg';
 import google from '../assets/google.svg';
@@ -114,7 +114,7 @@ const Register = () => {
           <p className='text-2xl'>Xush kelibsiz!</p>
           <p className='text-sm flex flex-col items-end text-[#8D8D8D]'>
             Hisobingiz bormi?
-            <a href='/Login' className='text-bluenew font-medium cursor-pointer'>Kirish</a>
+            <Link to='/Login' className='text-bluenew font-medium cursor-pointer'>Kirish</Link>
           </p>
         </div>
 
