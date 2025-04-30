@@ -181,7 +181,7 @@ const Work = () => {
       setUserData(updatedData);
       
       // Navigate to next page
-      navigate('/nextPage');
+      navigate('/');
     } catch (error) {
       console.error('Error saving profile data:', error);
       setError('Profil ma\'lumotlarini saqlashda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.');

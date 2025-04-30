@@ -34,7 +34,7 @@ function User() {
           };
     })
   return (
-    <div>
+    <div className=''>
       <StorisMe />
       <StorisCreate />
     </div>

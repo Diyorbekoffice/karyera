@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import axios from "../axios";
 import authBG from '../assets/authBG.svg';
-import google from '../assets/google.svg';
+
+import GoogleLogin from "../components/GoogleLogin";
 
 const Login = () => {
   const emailRef = useRef();
@@ -66,14 +67,7 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    setLoadingButton("google"); // 🔥 Google button bosilganda
-    // Google login funksiyasi shu yerda yoziladi
-    setTimeout(() => {
-      setLoadingButton("");
-      alert("Google login hali tayyor emas 😉");
-    }, 2000);
-  };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(${authBG})` }}>
@@ -85,19 +79,7 @@ const Login = () => {
         <h1 className='text-3xl font-semibold'>Kirish</h1>
 
         {/* Google Button */}
-        <div
-          onClick={handleGoogleLogin}
-          className='flex items-center justify-center text-sm text-[#4285F4] gap-4 px-6 py-3 bg-[#E9F1FF] max-w-[244px] mt-4 rounded-[9px] cursor-pointer'
-        >
-          {loadingButton === "google" ? (
-            <div className="w-6 h-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          ) : (
-            <>
-              <img className='w-[21px]' src={google} alt="google" />
-              <span>Google orqali kirish</span>
-            </>
-          )}
-        </div>
+        <GoogleLogin />
 
         {/* Inputs */}
         <div className='flex flex-col w-full gap-4 mt-9'>

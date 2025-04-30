@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function StorisCreate() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,6 +10,39 @@ function StorisCreate() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [activeStoriesCount, setActiveStoriesCount] = useState(0);
+  const [limitReachedModal, setLimitReachedModal] = useState(false);
+
+  // Check active stories count when component mounts
+  useEffect(() => {
+    const checkActiveStories = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) return;
+
+        const response = await fetch('https://karyeraweb.pythonanywhere.com/api/profile/my_stories/', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const now = new Date();
+          const activeCount = data.filter(story => {
+            const storyDate = new Date(story.created_at);
+            const diffInHours = (now - storyDate) / (1000 * 60 * 60);
+            return diffInHours < story.duration;
+          }).length;
+          setActiveStoriesCount(activeCount);
+        }
+      } catch (err) {
+        console.error('Error fetching active stories:', err);
+      }
+    };
+
+    checkActiveStories();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +61,12 @@ function StorisCreate() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (activeStoriesCount >= 3) {
+      setError('You can only have 3 active stories at a time');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     setSuccess(false);
@@ -59,13 +98,16 @@ function StorisCreate() {
       }
 
       setSuccess(true);
-      setIsModalOpen(false);
-      // Reset form
-      setFormData({
-        title: '',
-        image: null,
-        duration: 6
-      });
+      setActiveStoriesCount(prev => prev + 1);
+
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setFormData({
+          title: '',
+          image: null,
+          duration: 6
+        });
+      }, 5);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -76,11 +118,37 @@ function StorisCreate() {
   return (
     <div>
       <button 
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => {
+          if (activeStoriesCount >= 3) {
+            setLimitReachedModal(true);
+          } else {
+            setIsModalOpen(true);
+            setError(null);
+            setSuccess(false);
+          }
+        }}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
       >
         + Create Story
       </button>
+
+      {/* Limit reached modal */}
+      {limitReachedModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm text-center">
+            <h2 className="text-2xl font-bold mb-4 text-red-600">Limit reached</h2>
+            <p className="text-gray-700 mb-6">
+              Bir kunda faqat 3 ta story joylash mumkin. Iltimos, avval eski story'laringizni o'chirib tashlang yoki kuting.
+            </p>
+            <button
+              onClick={() => setLimitReachedModal(false)}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            >
+              Yopish
+            </button>
+          </div>
+        </div>
+      )}
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -91,8 +159,10 @@ function StorisCreate() {
                 onClick={() => {
                   setIsModalOpen(false);
                   setError(null);
+                  setSuccess(false);
                 }}
                 className="text-gray-500 hover:text-gray-700"
+                disabled={isLoading}
               >
                 &times;
               </button>
@@ -111,6 +181,7 @@ function StorisCreate() {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border rounded"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -126,12 +197,13 @@ function StorisCreate() {
                   className="w-full px-3 py-2 border rounded"
                   accept="image/*"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
               <div className="mb-6">
                 <label className="block text-gray-700 mb-2">
-                  Duration (seconds)
+                  Duration (hours)
                 </label>
                 <div className="flex gap-4">
                   {[6, 12, 24].map((duration) => (
@@ -141,10 +213,11 @@ function StorisCreate() {
                         name="duration"
                         value={duration}
                         checked={formData.duration === duration}
-                        onChange={handleInputChange}
+                        onChange={() => setFormData({...formData, duration})}
                         className="mr-2"
+                        disabled={isLoading}
                       />
-                      {duration}
+                      {duration} hours
                     </label>
                   ))}
                 </div>
@@ -154,16 +227,16 @@ function StorisCreate() {
                 <div className="mb-4 text-red-500 text-sm">{error}</div>
               )}
 
-              {success && (
-                <div className="mb-4 text-green-500 text-sm">
-                  Story created successfully!
-                </div>
-              )}
+              
 
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={() => {
+                    setIsModalOpen(false);
+                    setError(null);
+                    setSuccess(false);
+                  }}
                   className="px-4 py-2 border rounded hover:bg-gray-100"
                   disabled={isLoading}
                 >
@@ -172,7 +245,7 @@ function StorisCreate() {
                 <button
                   type="submit"
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-                  disabled={isLoading}
+                  disabled={isLoading || activeStoriesCount >= 3}
                 >
                   {isLoading ? 'Uploading...' : 'Create Story'}
                 </button>

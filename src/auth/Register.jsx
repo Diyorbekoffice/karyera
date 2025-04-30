@@ -4,6 +4,7 @@ import axios from '../axios';
 import authBG from '../assets/authBG.svg';
 import google from '../assets/google.svg';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import GoogleRegister from '../components/GoogleRegister';
 
 const Register = () => {
   const emailRef = useRef();
@@ -119,10 +120,7 @@ const Register = () => {
 
         <h1 className='text-3xl font-semibold'>Ro’yxatdan o’tish</h1>
 
-        <div className='flex text-sm text-[#4285F4] gap-4 px-6 py-3 bg-[#E9F1FF] max-w-[244px] mt-4 rounded-[9px] cursor-pointer'>
-          <img className='w-[21px]' src={google} alt="google" />
-          <span className='text-[16px]'>Google orqali kirish</span>
-        </div>
+        <GoogleRegister />
 
         <div className='flex flex-col w-full gap-4 mt-9'>
           {error && <div className="text-red-500 text-center">{error}</div>}

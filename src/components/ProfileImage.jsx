@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FaUserCircle, FaCamera, FaTrash, FaBriefcase, FaGraduationCap, FaMapMarkerAlt, FaEdit } from 'react-icons/fa';
 import { RotateLoader } from 'react-spinners';
 import ProfileEdit from './ProfileEdit';
+import bg from '../assets/defaultbg.png';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -33,6 +34,8 @@ const ProfileHeader = ({ userId }) => {
   const [showFullBio, setShowFullBio] = useState(false);
 
   const token = localStorage.getItem('accessToken');
+  console.log(userId);
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -195,7 +198,7 @@ const ProfileHeader = ({ userId }) => {
       <div
         className="h-96 w-full relative rounded-b-xl bg-gradient-to-r from-gray-400 to-gray-600 cursor-pointer"
         style={{
-          backgroundImage: backImage ? `url(${backImage})` : 'none',
+          backgroundImage: backImage ? `url(${backImage})` : `url(${bg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
@@ -203,12 +206,12 @@ const ProfileHeader = ({ userId }) => {
       >
         {loadingType === 'profile_back_image' && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <RotateLoader color="#ffffff" size={15} />
+            <RotateLoader color="#000" size={15} />
           </div>
         )}
 
         {(!backImage || showBackImageUpload) && isOwner && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="absolute inset-0 flex items-center justify-center bg-neutral-400 rounded-xl bg-opacity-30">
             <div className="text-white text-center p-4">
               <label htmlFor="backImageUpload" className="cursor-pointer">
                 <FaCamera className="mx-auto text-4xl mb-2" />
@@ -251,7 +254,7 @@ const ProfileHeader = ({ userId }) => {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                  <FaUserCircle className="w-3/4 h-3/4 text-gray-400" />
+                  <FaUserCircle className="w-4/4 h-4/4 text-gray-400" />
                 </div>
               )}
 
@@ -262,7 +265,7 @@ const ProfileHeader = ({ userId }) => {
               )}
 
               {!profileImage && isOwner && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-full">
+                <div className="absolute inset-0 flex items-center justify-center bg-neutral-500 border-[#f3f3f3] border-8 bg-opacity-30 rounded-full">
                   <div className="text-white text-center p-4">
                     <label htmlFor="profileImageUpload" className="cursor-pointer">
                       <FaCamera className="mx-auto text-2xl mb-1" />
