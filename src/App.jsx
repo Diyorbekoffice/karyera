@@ -15,28 +15,32 @@ import Work from "./createUser/Work";
 import Layout from "./layouts/Layout";
 import Profile from "./pages/Profile";
 import Connection from "./pages/Connection";
+import MobileWarning from "./components/MobileWarning";
 
 function App() {
     return (
-        <Routes>
-            <Route path="/main" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/verification" element={<Verification />} />
-            <Route path="/respassword" element={<Respassword />} />
-            <Route path="/sentemail" element={<Sentemail />} />
-            <Route path="/locationcreate" element={<CreateLocation />} />
-            
-            
-            <Route path="/work" element={<Work />} />
-            <Route path="/study" element={<Study />} />
+        <>
+            <MobileWarning />
+            <Routes>
+                <Route path="/main" element={<Main />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/verification" element={<Verification />} />
+                <Route path="/respassword" element={<Respassword />} />
+                <Route path="/sentemail" element={<Sentemail />} />
+                <Route path="/locationcreate" element={<CreateLocation />} />
 
-            <Route element={<Layout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/profile/:userId" element={<Profile />} />
-                <Route path="/connection" element={<Connection />} />
-            </Route>
-        </Routes>
+
+                <Route path="/work" element={<Work />} />
+                <Route path="/study" element={<Study />} />
+
+                <Route element={<Layout />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/profile/:userId" element={<Profile />} />
+                    <Route path="/connection" element={<Connection />} />
+                </Route>
+            </Routes>
+        </>
     );
 }
 

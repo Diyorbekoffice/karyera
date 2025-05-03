@@ -292,7 +292,7 @@ function ProfileEdit({ userData }) {
                 onClick={openModal}
                 className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors"
             >
-                <FaEdit /> tahrirlash
+                <FaEdit /> Profilni tahrirlash
             </button>
 
             {isModalOpen && (

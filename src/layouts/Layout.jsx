@@ -5,7 +5,7 @@ import logo from '../assets/logo.svg';
 import Recommendations from "../components/Recommendations";
 import {
   FaUserCircle, FaSignOutAlt, FaHome, FaUsers, FaPlusSquare,
-  FaInbox, FaSearch, FaBell, FaCogs
+  FaInbox, FaSearch, FaBell, FaCogs, FaLink 
 } from 'react-icons/fa';
 import { IoChatbubbleEllipsesSharp } from 'react-icons/io5';
 import Create from '../components/Create';
@@ -143,56 +143,85 @@ function Layout() {
         )}
 
         <div className='flex mt-1 max-w-[1440px] mx-auto justify-between'>
-          <aside className="w-[350px] bg-white rounded-xl shadow-md flex flex-col p-4 ">
+          <div className='flex'>
+            <aside className="w-[350px] bg-white h-[500px] rounded-xl shadow-md flex flex-col p-4 ">
 
 
-            {/* User Card */}
-            <div  className="bg-gray-50  rounded-xl shadow-sm  py-3 mb-8">
-              <div className="flex items-center gap-2 m-2">
-                <div className=''>
-                  <StorisMe />
+              {/* User Card */}
+              <div className="bg-gray-50  rounded-xl shadow-sm  py-3 mb-8">
+                <div className="flex items-center gap-2 m-2">
+                  <div className=''>
+                    <StorisMe />
+                  </div>
+                  <div>
+                    <h4 onClick={handleProfileClick} className="font-semibold text-lg cursor-pointer">{profile?.full_name || 'Foydalanuvchi'}</h4>
+                    <p onClick={handleProfileClick} className="text-xs text-gray-500 cursor-pointer">{profile?.bio}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 onClick={handleProfileClick} className="font-semibold text-lg cursor-pointer">{profile?.full_name || 'Foydalanuvchi'}</h4>
-                  <p onClick={handleProfileClick} className="text-xs text-gray-500 cursor-pointer">{profile?.bio}</p>
+                <div className='flex justify-center gap-12'>
+                  <div className='flex flex-col items-center font-bold'>
+                    {profile?.connections_count} <span> do'stlar</span>
+                  </div>
+                  <div className='flex flex-col items-center font-bold'>
+                    {profile?.post_count} <span>postlar</span>
+                  </div>
                 </div>
               </div>
-              <div className='flex justify-center gap-12'>
-                <div  className='flex flex-col items-center font-bold'>
-                  {profile?.connections_count} <span> do'stlar</span>
-                </div>
-                <div className='flex flex-col items-center font-bold'>
-                  {profile?.post_count} <span>postlar</span>
-                </div>
-              </div>
+
+
+
+              {/* Menu */}
+              <nav className="flex flex-col gap-4 text-gray-700">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-3 py-2 rounded-md ${isActive ? "bg-blue-100 text-blue-600" : "hover:text-blue-600"
+                    }`
+                  }
+                >
+                  <FaHome /> Bosh sahifa
+                </NavLink>
+
+                <NavLink
+                  to="/chat"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-3 py-2 rounded-md ${isActive ? "bg-blue-100 text-blue-600" : "hover:text-blue-600"
+                    }`
+                  }
+                >
+                  <IoChatbubbleEllipsesSharp /> Chatlar
+                </NavLink>
+
+                <NavLink
+                  to="/users"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-3 py-2 rounded-md ${isActive ? "bg-blue-100 text-blue-600" : "hover:text-blue-600"
+                    }`
+                  }
+                >
+                  <FaUsers /> Do‘stlar
+                </NavLink>
+
+                <NavLink
+                  to="/settings"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 px-3 py-2 rounded-md ${isActive ? "bg-blue-100 text-blue-600" : "hover:text-blue-600"
+                    }`
+                  }
+                >
+                  <FaLink  /> Ulanishlar
+                </NavLink>
+              </nav>
+
+            </aside>
+            <div>
+              <main className="p-6">
+                <Outlet />
+              </main>
             </div>
-
-            
-
-            {/* Menu */}
-            <nav className="flex flex-col gap-4 text-gray-700">
-              <NavLink to="/" className="flex items-center gap-2 hover:text-blue-600">
-                <FaHome /> Bosh sahifa
-              </NavLink>
-              <NavLink to="/chat" className="flex items-center gap-2 hover:text-blue-600">
-                <IoChatbubbleEllipsesSharp /> Chatlar
-              </NavLink>
-              
-              <NavLink to="/users" className="flex items-center gap-2 hover:text-blue-600">
-                <FaUsers /> Do‘stlar
-              </NavLink>
-              <NavLink to="/settings" className="flex items-center gap-2 hover:text-blue-600">
-                <FaCogs /> Sozlamalar
-              </NavLink>
-            </nav>
-          </aside>
-          <div>
-            <main className="p-6">
-              <Outlet />
-            </main>
           </div>
           <div>
-          <Recommendations />
+            <Recommendations />
           </div>
         </div>
       </div>

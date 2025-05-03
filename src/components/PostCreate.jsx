@@ -82,10 +82,10 @@ function PostCreate() {
       <div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 p-4 bg-white shadow rounded hover:bg-gray-100 transition"
+          className="flex items-center gap-2 px-[10px] py-[2px] rounded-md bg-white shadow  hover:bg-gray-100 transition "
         >
-          <FaRegFileAlt />
-          <span>Postlar</span>
+          <span className='text-3xl'>+</span>
+          <span>Post yaratish</span>
         </button>
       </div>
 

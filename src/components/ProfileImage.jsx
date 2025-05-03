@@ -5,6 +5,9 @@ import { RotateLoader } from 'react-spinners';
 import ProfileEdit from './ProfileEdit';
 import bg from '../assets/defaultbg.png';
 import Modal from 'react-modal';
+import PostCreate from './PostCreate';
+import { Link } from 'react-router-dom';
+import StorisList from './StorisList';
 
 Modal.setAppElement('#root');
 
@@ -193,10 +196,10 @@ const ProfileImage = ({ userId }) => {
   };
 
   return (
-    <div className="relative w-full mb-16">
+    <div className="relative w-full mb-16 lg:w-[720px]">
       {/* Background Image */}
       <div
-        className="h-96 w-full relative rounded-b-xl bg-gradient-to-r from-gray-400 to-gray-600 cursor-pointer"
+        className="h-64 w-full relative rounded-b-xl bg-gradient-to-r from-gray-400 to-gray-600 cursor-pointer"
         style={{
           backgroundImage: backImage ? `url(${backImage})` : `url(${bg})`,
           backgroundSize: 'cover',
@@ -239,11 +242,11 @@ const ProfileImage = ({ userId }) => {
       </div>
 
       {/* Profile Picture and Info */}
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-start -mt-16 left-12 relative">
+      <div className="container mx-auto px-4 ">
+        <div className="flex flex-col md:flex-row items-start -mt-16 left-5 relative">
           <div className="relative">
             <div
-              className="w-48 h-48 rounded-full border-8 border-[#f3f3f3] overflow-hidden bg-white cursor-pointer"
+              className="w-36 h-36 rounded-full border-8 border-[#f3f3f3] overflow-hidden bg-white cursor-pointer"
               onClick={() => handleImageClick('profile_image', profileImage)}
             >
               {profileImage ? (
@@ -306,27 +309,12 @@ const ProfileImage = ({ userId }) => {
           </div>
 
           <div className='flex flex-col md:flex-row items-start md:items-center justify-between w-full'>
-            <div className='ml-5 mt-18 flex flex-col gap-2 w-full'>
-              <h1 className='text-4xl md:text-5xl font-semibold'>{fullName}</h1>
-              
-              {/* User details section */}
-              <div className=" flex gap-12 w-full items-start">
-                <div className="space-y-2">
-                  {renderDetail(<FaBriefcase className="text-gray-500" />, userDetails.job)}
-                  {renderDetail(<FaGraduationCap className="text-gray-500" />, 
-                    userDetails.eduarea && userDetails.subeduarea 
-                      ? `${userDetails.eduarea} (${userDetails.subeduarea})` 
-                      : userDetails.eduarea)}
-                  {renderDetail(<FaMapMarkerAlt className="text-gray-500" />, 
-                    userDetails.region && userDetails.territory 
-                      ? `${userDetails.region}, ${userDetails.territory}` 
-                      : userDetails.region)}
-                </div>
-                
-                {userDetails.bio && (
+            <div className='ml-10 mt-18 flex flex-col gap-2 w-full'>
+              <h1 className='text-4xl md:text-4xl font-semibold'>{fullName}</h1>
+              {userDetails.bio && (
                   <div className="flex items-start gap-2">
                     <div className="">
-                      <h3 className="font-semibold text-gray-700">Bio: </h3>
+                      <h3 className="font-semibold text-gray-700"> </h3>
                       
                     </div>
                     <p className={` text-gray-600 ${!showFullBio && 'line-clamp-3'}`}>
@@ -342,28 +330,52 @@ const ProfileImage = ({ userId }) => {
                     )}
                   </div>
                 )}
+              
+              {/* User details section */}
+              <div className=" flex gap-1 w-full items-start ">
+                <div className=" gap-6 flex items-center">
+                  {renderDetail(<FaBriefcase className="text-gray-500" />, userDetails.job)}
+                  {renderDetail(<FaGraduationCap className="text-gray-500" />, 
+                    userDetails.eduarea && userDetails.subeduarea 
+                      ? `${userDetails.eduarea} (${userDetails.subeduarea})` 
+                      : userDetails.eduarea)}
+                  {renderDetail(<FaMapMarkerAlt className="text-gray-500" />, 
+                    userDetails.region && userDetails.territory 
+                      ? `${userDetails.region}, ${userDetails.territory}` 
+                      : userDetails.region)}
+                </div>
+                
+                
               </div>
               
               
             </div>
             
             
-            {isOwner && (
-              <div className='mt-4 mr-8'>
-                <ProfileEdit userData={realUserId} />
-              </div>
-            )}
+            
           </div>
           
         </div>
-        <div className='flex gap-8 mt-4 ml-14'>
-                <a href="#" className="hover:underline">
+        <div className='flex gap-8 mt-4 absolute top-80 left-10 lg:w-[720px]'>
+                <Link to="#" className="hover:underline flex flex-col items-center">
                   <span className='font-semibold'>{connection}</span> do'stlar
-                </a>
-                <a href="#" className="hover:underline">
+                </Link>
+                <Link to="#" className="hover:underline flex flex-col items-center">
                   <span className='font-semibold'>{post}</span> postlar
-                </a>
+                </Link>
               </div>
+              {isOwner && (
+              <div>
+                <div className=' mr-8 flex justify-between gap-44 mt-8 items-center'>
+                <h2 className='font-bold text-3xl'> storislar</h2>
+                <ProfileEdit userData={realUserId} />
+              </div>
+              <div>
+              <StorisList ids={realUserId} />
+            </div>
+              </div>
+            )}
+            
       </div>
 
       {/* Image Modal */}

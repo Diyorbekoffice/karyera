@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import User from "../components/User";
-import StorisMe from "../components/StorisMe";
 import StoriesUser from "../components/StorisUser";
-
-
+import Posts from "../components/Posts";
 
 function Home() {
   const navigate = useNavigate();
@@ -16,23 +14,33 @@ function Home() {
       if (!accessToken) {
         navigate("/main");
       } else {
-        const response = await fetch("https://karyeraweb.pythonanywhere.com/api/check-profile/", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        try {
+          const response = await fetch("https://karyeraweb.pythonanywhere.com/api/check-profile/", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
 
-        if (response.status === 200) {
-          const data = await response.json();
-        } else {
-          if (response.status === 401) {
-            navigate("/login");
-          } else if (response.status === 404) {
-            navigate("/locationCreate");
+          if (response.ok) {
+            const data = await response.json();
+            // Profil ID ni localStorage ga saqlash
+            if (data.profile?.id) {
+              localStorage.setItem("myId", data.profile.id.toString());
+            }
           } else {
-            console.error("Serverdan xato javob keldi:", response.status);
+            if (response.status === 401) {
+              navigate("/login");
+            } else if (response.status === 404) {
+              navigate("/locationCreate");
+            } else {
+              console.error("Serverdan xato javob keldi:", response.status);
+            }
           }
+        } catch (error) {
+          console.error("Xatolik yuz berdi:", error);
+          // Xatolik bo'lsa, foydalanuvchini login sahifasiga yo'naltirish
+          navigate("/login");
         }
       }
     };
@@ -41,11 +49,14 @@ function Home() {
   }, [navigate]);
 
   return (
-    <div className="w-[700px]  flex">
-      <User />
-      <StoriesUser />
-      
-      
+    <div>
+      <div className="max-w-[700px] flex">
+        <User />
+        <StoriesUser />
+      </div>
+      <div>
+        <Posts />
+      </div>
     </div>
   );
 }
