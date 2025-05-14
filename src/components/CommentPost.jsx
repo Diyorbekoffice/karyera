@@ -142,7 +142,8 @@ function CommentPost({ postId }) {
 
   const navigateToProfile = (userId) => {
 const idmy = 'me'
-userId === idmy ? navigate( `/profile/${userId}`) : navigate(`/profile/${idmy}` ) 
+navigate(userId === idmy ? `/profile/${idmy}` : `/profile/${userId}`);
+
     // navigate(userId === myId ? "/profile/me" : `/profile/${userId}`);
   };
 

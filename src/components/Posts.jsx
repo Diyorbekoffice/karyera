@@ -117,7 +117,7 @@ const Posts = () => {
       <PostCreate />
       </div>
       
-      <div className="space-y-6 overflow-y-auto" style={{ maxHeight: '550px' }}>
+      <div className="space-y-6 overflow-y-auto" style={{ maxHeight: '550px',overflowY: 'auto', overflowX: 'hidden', scrollbarWidth: 'none' }}>
         {posts.length > 0 ? (
           posts.map((post, index) => {
             const isLastPost = posts.length === index + 1;

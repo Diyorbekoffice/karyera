@@ -16,6 +16,9 @@ import Layout from "./layouts/Layout";
 import Profile from "./pages/Profile";
 import Connection from "./pages/Connection";
 import MobileWarning from "./components/MobileWarning";
+import PostMe from "./pages/PostMe";
+import Friends from "./pages/Friends";
+import Notifictions from "./pages/Notifictions";
 
 function App() {
     return (
@@ -38,6 +41,10 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/profile/:userId" element={<Profile />} />
                     <Route path="/connection" element={<Connection />} />
+                    <Route path="/postme" element={<PostMe />} />
+                    <Route path="/friends" element={<Friends />} />
+                    <Route path="/notifictions" element={<Notifictions />} />
+                    
                 </Route>
             </Routes>
         </>

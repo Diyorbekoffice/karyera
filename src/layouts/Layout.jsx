@@ -5,11 +5,12 @@ import logo from '../assets/logo.svg';
 import Recommendations from "../components/Recommendations";
 import {
   FaUserCircle, FaSignOutAlt, FaHome, FaUsers, FaPlusSquare,
-  FaInbox, FaSearch, FaBell, FaCogs, FaLink 
+  FaInbox, FaSearch, FaBell, FaCogs, FaLink, FaFileAlt
 } from 'react-icons/fa';
 import { IoChatbubbleEllipsesSharp } from 'react-icons/io5';
 import Create from '../components/Create';
 import StorisMe from '../components/StorisMe';
+import Search from '../components/Search';
 
 function Layout() {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ function Layout() {
   const [error, setError] = useState(null);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState('');
 
   const toggleSelect = () => setIsSelectOpen(!isSelectOpen);
   const handleLogout = () => {
@@ -27,6 +30,43 @@ function Layout() {
   const handleLogoClick = () => navigate('/');
   const handleProfileClick = () => navigate(`/profile/me`);
   const toggleCreate = () => setShowCreate(!showCreate);
+
+  const handleSendInvite = async () => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.post(
+        'https://karyeraweb.pythonanywhere.com/user/send-invite/',
+        { email: inviteEmail },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert('Taklif havolasi yuborildi');
+      setShowInviteModal(false);
+      setInviteEmail('');
+    } catch (error) {
+      const res = error.response?.data;
+  
+      // ⚠️ Har xil formatlar uchun tekshiruv
+      if (typeof res === 'string') {
+        alert(res);
+      } else if (res?.detail) {
+        alert(res.detail);
+      } else if (res?.message) {
+        alert(res.message);
+      } else if (typeof res === 'object') {
+        // Ob'ektdagi har bir xatoni chiqarish
+        const messages = Object.values(res).flat().join('\n');
+        alert(messages);
+      } else {
+        alert("Noma'lum xatolik yuz berdi");
+      }
+    }
+  };
+  
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -41,7 +81,6 @@ function Layout() {
           }
         );
 
-
         setProfile(response.data);
 
       } catch (err) {
@@ -55,17 +94,11 @@ function Layout() {
       }
     };
 
-
     fetchProfile();
   }, [navigate]);
 
-
-
   return (
     <div className="flex w-full bg-gray-100 ">
-
-
-
       {/* Main */}
       <div className="flex-1 bg">
         {/* Header */}
@@ -78,13 +111,7 @@ function Layout() {
             </div>
 
             {/* Search Input */}
-            <div className="flex-1 mx-4 max-w-md">
-              <input
-                type="text"
-                placeholder="Qidirish..."
-                className="w-full border border-gray-300 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+            <Search />
 
             {/* Profile Info */}
             <div className="flex items-center gap-3">
@@ -130,7 +157,6 @@ function Layout() {
                   Kirish
                 </button>
               )}
-
             </div>
           </div>
         </header>
@@ -142,11 +168,39 @@ function Layout() {
           </div>
         )}
 
+        {/* Invite Friend Modal */}
+        {showInviteModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-md">
+              <h2 className="text-lg font-bold mb-4">Taklif yuborish</h2>
+              <input
+                type="email"
+                placeholder="Do‘stingiz email manzilini kiriting"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
+              />
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => setShowInviteModal(false)}
+                  className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  onClick={handleSendInvite}
+                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Yuborish
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className='flex mt-1 max-w-[1440px] mx-auto justify-between'>
           <div className='flex'>
             <aside className="w-[350px] bg-white h-[500px] rounded-xl shadow-md flex flex-col p-4 ">
-
-
               {/* User Card */}
               <div className="bg-gray-50  rounded-xl shadow-sm  py-3 mb-8">
                 <div className="flex items-center gap-2 m-2">
@@ -159,16 +213,14 @@ function Layout() {
                   </div>
                 </div>
                 <div className='flex justify-center gap-12'>
-                  <div className='flex flex-col items-center font-bold'>
+                  <div onClick={() => navigate(`/friends`)} className='flex flex-col items-center font-bold cursor-pointer'>
                     {profile?.connections_count} <span> do'stlar</span>
                   </div>
-                  <div className='flex flex-col items-center font-bold'>
+                  <div onClick={() => navigate(`/postme`)} className='flex flex-col items-center font-bold cursor-pointer'>
                     {profile?.post_count} <span>postlar</span>
                   </div>
                 </div>
               </div>
-
-
 
               {/* Menu */}
               <nav className="flex flex-col gap-4 text-gray-700">
@@ -183,17 +235,17 @@ function Layout() {
                 </NavLink>
 
                 <NavLink
-                  to="/chat"
+                  to="/postme"
                   className={({ isActive }) =>
                     `flex items-center gap-2 px-3 py-2 rounded-md ${isActive ? "bg-blue-100 text-blue-600" : "hover:text-blue-600"
                     }`
                   }
                 >
-                  <IoChatbubbleEllipsesSharp /> Chatlar
+                  <FaFileAlt /> Postlarim
                 </NavLink>
 
                 <NavLink
-                  to="/users"
+                  to="/friends"
                   className={({ isActive }) =>
                     `flex items-center gap-2 px-3 py-2 rounded-md ${isActive ? "bg-blue-100 text-blue-600" : "hover:text-blue-600"
                     }`
@@ -203,16 +255,35 @@ function Layout() {
                 </NavLink>
 
                 <NavLink
-                  to="/settings"
+                  to="/notifictions"
                   className={({ isActive }) =>
                     `flex items-center gap-2 px-3 py-2 rounded-md ${isActive ? "bg-blue-100 text-blue-600" : "hover:text-blue-600"
                     }`
                   }
                 >
-                  <FaLink  /> Ulanishlar
+                  <FaBell /> Bildirishnomalar
                 </NavLink>
+
+                {/* Do‘st taklif qilish */}
+                <button
+                  onClick={() => setShowInviteModal(true)}
+                  className="flex items-center gap-2 px-3 py-2 text-green-600 font-medium hover:bg-green-100 rounded-md"
+                >
+                  <FaPlusSquare /> Do‘st taklif qilish
+                </button>
               </nav>
 
+              {/* Hashtaglar bo‘limi */}
+              <div className="mt-16 p-6 border-t pt-4 bg-white">
+                <h4 className="font-semibold text-gray-700 mb-2">Hashtaglar</h4>
+                <ul className="flex flex-wrap gap-2 text-sm text-blue-600">
+                  <li className="bg-blue-50 px-2 py-1 rounded">#frontend</li>
+                  <li className="bg-blue-50 px-2 py-1 rounded">#dasturlash</li>
+                  <li className="bg-blue-50 px-2 py-1 rounded">#reactjs</li>
+                  <li className="bg-blue-50 px-2 py-1 rounded">#ish</li>
+                  <li className="bg-blue-50 px-2 py-1 rounded">#motivatsiya</li>
+                </ul>
+              </div>
             </aside>
             <div>
               <main className="p-6">

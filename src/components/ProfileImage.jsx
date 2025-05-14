@@ -38,7 +38,7 @@ const ProfileImage = ({ userId }) => {
 
   const token = localStorage.getItem('accessToken');
   console.log(userId);
-  
+
 
   useEffect(() => {
     async function fetchData() {
@@ -312,70 +312,71 @@ const ProfileImage = ({ userId }) => {
             <div className='ml-10 mt-18 flex flex-col gap-2 w-full'>
               <h1 className='text-4xl md:text-4xl font-semibold'>{fullName}</h1>
               {userDetails.bio && (
-                  <div className="flex items-start gap-2">
-                    <div className="">
-                      <h3 className="font-semibold text-gray-700"> </h3>
-                      
-                    </div>
-                    <p className={` text-gray-600 ${!showFullBio && 'line-clamp-3'}`}>
-                      {userDetails.bio}
-                    </p>
-                    {userDetails.bio.length > 150 && (
-                      <button 
-                        onClick={toggleBio}
-                        className="text-blue-500 hover:text-blue-700 text-sm mt-1"
-                      >
-                        {showFullBio ? 'Kamroq ko\'rsatish' : 'Batafsil...'}
-                      </button>
-                    )}
+                <div className="flex items-start gap-2">
+                  <div className="">
+                    <h3 className="font-semibold text-gray-700"> </h3>
+
                   </div>
-                )}
-              
+                  <p className={` text-gray-600 ${!showFullBio && 'line-clamp-3'}`}>
+                    {userDetails.bio}
+                  </p>
+                  {userDetails.bio.length > 150 && (
+                    <button
+                      onClick={toggleBio}
+                      className="text-blue-500 hover:text-blue-700 text-sm mt-1"
+                    >
+                      {showFullBio ? 'Kamroq ko\'rsatish' : 'Batafsil...'}
+                    </button>
+                  )}
+                </div>
+              )}
+
               {/* User details section */}
               <div className=" flex gap-1 w-full items-start ">
                 <div className=" gap-6 flex items-center">
                   {renderDetail(<FaBriefcase className="text-gray-500" />, userDetails.job)}
-                  {renderDetail(<FaGraduationCap className="text-gray-500" />, 
-                    userDetails.eduarea && userDetails.subeduarea 
-                      ? `${userDetails.eduarea} (${userDetails.subeduarea})` 
+                  {renderDetail(<FaGraduationCap className="text-gray-500" />,
+                    userDetails.eduarea && userDetails.subeduarea
+                      ? `${userDetails.eduarea} (${userDetails.subeduarea})`
                       : userDetails.eduarea)}
-                  {renderDetail(<FaMapMarkerAlt className="text-gray-500" />, 
-                    userDetails.region && userDetails.territory 
-                      ? `${userDetails.region}, ${userDetails.territory}` 
+                  {renderDetail(<FaMapMarkerAlt className="text-gray-500" />,
+                    userDetails.region && userDetails.territory
+                      ? `${userDetails.region}, ${userDetails.territory}`
                       : userDetails.region)}
                 </div>
-                
-                
+
+
               </div>
-              
-              
+
+
             </div>
-            
-            
-            
+
+
+
           </div>
-          
+
         </div>
         <div className='flex gap-8 mt-4 absolute top-80 left-10 lg:w-[720px]'>
-                <Link to="#" className="hover:underline flex flex-col items-center">
-                  <span className='font-semibold'>{connection}</span> do'stlar
-                </Link>
-                <Link to="#" className="hover:underline flex flex-col items-center">
-                  <span className='font-semibold'>{post}</span> postlar
-                </Link>
-              </div>
-              {isOwner && (
-              <div>
-                <div className=' mr-8 flex justify-between gap-44 mt-8 items-center'>
-                <h2 className='font-bold text-3xl'> storislar</h2>
-                <ProfileEdit userData={realUserId} />
-              </div>
-              <div>
+          <Link to={isOwner ? "/friends" : ""} className="hover:underline flex flex-col items-center">
+            <span className='font-semibold'>{connection}</span> do'stlar
+          </Link>
+          <Link to={isOwner ? "/postme" : ""} className="hover:underline flex flex-col items-center">
+            <span className='font-semibold'>{post}</span> postlar
+          </Link>
+
+        </div>
+        {isOwner && (
+          <div>
+            <div className=' mr-8 flex justify-between gap-44 mt-8 items-center'>
+              <h2 className='font-bold text-3xl mt-4'> storislar</h2>
+              <ProfileEdit userData={realUserId} />
+            </div>
+            <div>
               <StorisList ids={realUserId} />
             </div>
-              </div>
-            )}
-            
+          </div>
+        )}
+
       </div>
 
       {/* Image Modal */}

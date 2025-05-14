@@ -39,10 +39,12 @@ function Profile() {
 
 
   return (
-    <div className='max-w-[1240px] mx-auto'>
+    <div>
+      <div className='max-h-screen' style={{ overflowY: 'auto', overflowX: 'hidden', scrollbarWidth: 'none'}}>
       <ProfileImage userId={userId} />
       
       
+    </div>
     </div>
   );
 }

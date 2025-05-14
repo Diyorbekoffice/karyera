@@ -83,7 +83,7 @@ function StorisList() {
   };
 
   return (
-    <div className='max-h-[250px] overflow-y-auto'>
+    <div className=' overflow-y-auto ' style={{ overflowY: 'auto', overflowX: 'hidden', scrollbarWidth: 'none'}}>
        
       <div className="grid grid-cols-2 gap-4 p-4 ">
         {stories.map((story, idx) => (
@@ -93,7 +93,7 @@ function StorisList() {
             onClick={() => { setCurrentStoryIndex(idx); setShowModal(true); }}
           >
             <img src={story.image} alt={story.title} className="w-full h-40 object-cover rounded-lg" />
-            <p className="mt-2 font-semibold">{story.title}</p>
+            
           </div>
         ))}
       </div>
